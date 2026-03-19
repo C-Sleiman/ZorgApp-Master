@@ -3,13 +3,10 @@ class User {
     int userID;
 
 
-
     public User(int id, String name) {
         this.userID = id;
         this.userName = name;
     }
-
-
 
     String getUserName() {
         return userName;
@@ -17,5 +14,9 @@ class User {
 
     int getUserID() {
         return userID;
+    }
+
+    boolean hasAccess(int choice) {
+        return false;
     }
 }

@@ -58,17 +58,37 @@ class Administration {
             System.out.format("%s\n", "=".repeat(80));
             System.out.format("Current patient: %s\n", currentPatient.fullName());
 
-            System.out.format("%d:  STOP\n", STOP);
-            System.out.format("%d:  View patient data\n", VIEW);
-            System.out.format("%d:  View patient list\n", PatientList);
-            System.out.format("%d:  Select patient\n", SelectPatient);
-            System.out.format("%d:  Edit patient\n", EditPatient);
-            System.out.format("%d:  Medicatie toevoegen\n", AddMeds);
-            System.out.format("%d:  Medicatie Editen\n", EditMeds);
-            System.out.format("%d:  Medicatie Delete\n", DeleteMeds);
+            if (currentUser.hasAccess(STOP))
+                System.out.format("%d:  STOP\n", STOP);
+
+            if (currentUser.hasAccess(VIEW))
+                System.out.format("%d:  View patient data\n", VIEW);
+
+            if (currentUser.hasAccess(PatientList))
+                System.out.format("%d:  View patient list\n", PatientList);
+
+            if (currentUser.hasAccess(SelectPatient))
+                System.out.format("%d:  Select patient\n", SelectPatient);
+
+            if (currentUser.hasAccess(EditPatient))
+                System.out.format("%d:  Edit patient\n", EditPatient);
+
+            if (currentUser.hasAccess(AddMeds))
+                System.out.format("%d:  Medicatie toevoegen\n", AddMeds);
+
+            if (currentUser.hasAccess(EditMeds))
+                System.out.format("%d:  Medicatie Editen\n", EditMeds);
+
+            if (currentUser.hasAccess(DeleteMeds))
+                System.out.format("%d:  Medicatie Delete\n", DeleteMeds);
 
             System.out.print("enter #choice: ");
             int choice = scanner.nextInt();
+
+            if (!currentUser.hasAccess(choice)) {
+                System.out.println("Geen toegang tot deze optie!");
+                continue;
+            }
 
             switch (choice) {
                 case STOP:
