@@ -3,56 +3,67 @@ import java.util.Scanner;
 
 class ZorgApp {
     public static void main(String[] args) {
+
         ArrayList<User> users = new ArrayList<>();
 
-        users.add(new User(1, "Admin"));
-        users.add(new User(2, "Huisarts"));
-        users.add(new User(3, "Tandarts"));
-        users.add(new User(4, "Fysio"));
-        users.add(new User(5, "Apotheker"));
+        users.add(new Admin(1, "Admin"));
+        users.add(new Huisarts(2, "Huisarts"));
+        users.add(new Tandarts(3, "Tandarts"));
+        users.add(new Fysio(4, "Fysio"));
+        users.add(new Apotheker(5, "Apotheker"));
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Login ===");
-        System.out.println("Beschikbare Gebruikers:");
+        while (true) {
+            System.out.println("=== Login ===");
+            System.out.println("Beschikbare Gebruikers:");
 
-        for (User user : users) {
-            System.out.println(user.getUserID() + " - " + user.getUserName());
-        }
-
-        System.out.print("Voer user ID in: ");
-        int gekozenId = scanner.nextInt();
-        scanner.nextLine();
-
-        User ingelogdeUser = null;
-
-        for (User user : users) {
-            if (user.getUserID() == gekozenId) {
-                ingelogdeUser = user;
-                break;
+            for (User user : users) {
+                System.out.println(user.getUserID() + " - " + user.getUserName());
             }
-        }
 
-        if (ingelogdeUser == null) {
-            System.out.println("Ongeldige login. Gebruiker niet gevonden.");
-            return;
-        }
+            System.out.print("Voer user ID in: ");
 
-        System.out.print("Voer gebruikersnaam in: ");
-        String ingevoerdeGebruikersnaam = scanner.nextLine();
+            if (!scanner.hasNextInt()) {
+                System.out.println("Ongeldige invoer.");
+                scanner.nextLine();
+                continue;
+            }
 
-        System.out.print("Voer wachtwoord in: ");
-        String ingevoerdWachtwoord = scanner.nextLine();
+            int gekozenId = scanner.nextInt();
+            scanner.nextLine();
 
-        if (ingevoerdeGebruikersnaam.equalsIgnoreCase(ingelogdeUser.getUserName())
-                && ingevoerdWachtwoord.equals("1234")) {
+            User ingelogdeUser = null;
 
-            System.out.println("Ingelogd als: " + ingelogdeUser.getUserName());
+            for (User user : users) {
+                if (user.getUserID() == gekozenId) {
+                    ingelogdeUser = user;
+                    break;
+                }
+            }
 
-            Administration administration = new Administration(ingelogdeUser);
-            administration.menu();
-        } else {
-            System.out.println("Gebruikersnaam of wachtwoord is fout.");
+            if (ingelogdeUser == null) {
+                System.out.println("Gebruiker niet gevonden.\n");
+                continue;
+            }
+
+            System.out.println("Login als: " + ingelogdeUser.getUserName());
+
+            System.out.print("Voer gebruikersnaam in: ");
+            String username = scanner.nextLine();
+
+            System.out.print("Voer wachtwoord in: ");
+            String password = scanner.nextLine();
+
+            if (username.equalsIgnoreCase(ingelogdeUser.getUserName()) && password.equals("1234")) {
+                System.out.println("Succesvol ingelogd!\n");
+
+                Administration administration = new Administration(ingelogdeUser);
+                administration.menu();
+                break;
+            } else {
+                System.out.println("Gebruikersnaam of wachtwoord is fout.\n");
+            }
         }
     }
 }
