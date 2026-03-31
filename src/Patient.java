@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Patient {
-
+    
     int id;
     String surname;
     String firstName;
@@ -13,19 +13,22 @@ class Patient {
     int age;
     double weight;
     double height;
+    double lungcap;
     double bmi;
     List<Allergies> allergies = new ArrayList<>();
     List<Consult> consults = new ArrayList<>();
+    
 
     public final List<MedicatieOpslag> medicatie = new ArrayList<>();
 
-    Patient(int id, String surname, String firstName, LocalDate dateOfBirth, double weight, double height) {
+    Patient(int id, String surname, String firstName, LocalDate dateOfBirth, double weight, double height, double lungcap) {
         this.id = id;
         this.surname = surname;
         this.firstName = firstName;
         this.dateOfBirth = dateOfBirth;
         this.weight = weight;
         this.height = height;
+        this.lungcap = lungcap;
 
         this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
 
@@ -55,6 +58,8 @@ class Patient {
     double getHeight() {
         return height;
     }
+    
+    double getLungcap() {return lungcap;}
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -71,6 +76,7 @@ class Patient {
         System.out.format("%-17s %s\n", "Weight:", weight + " kg");
         System.out.format("%-17s %s\n", "Height:", height + " m");
         System.out.format("%-17s %.1f\n", "BMI:", bmi);
+        System.out.format("%-17s %s\n", "Lungcap:", lungcap + "L");
 
 
         if (medicatie.isEmpty()) {
@@ -100,6 +106,7 @@ class Patient {
             }
         }
     }
+    
 
     public void addMedication(String medication, String dosage) {
         medicatie.add(new MedicatieOpslag(medication, dosage));
@@ -174,6 +181,8 @@ class Patient {
         }
         System.out.println("Consultation not found");
     }
+    
+   
 
     String fullName() {
         return String.format("%s %s [%d]", firstName, surname, age);

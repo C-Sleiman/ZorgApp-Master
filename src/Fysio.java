@@ -5,11 +5,11 @@ class Fysio extends User {
 
     @Override
     boolean hasAccess(int choice) {
-        return choice == Administration.VIEW
+        return choice == Administration.STOP
+                || choice == Administration.VIEW
                 || choice == Administration.PatientList
                 || choice == Administration.SelectPatient
-                || choice == Administration.AddConsult
-                || choice == Administration.EditConsult
-                || choice == Administration.DeleteConsult;
+                || choice == Administration.EditPatientLungcap
+                || choice == Administration.LOGOUT;
     }
 }

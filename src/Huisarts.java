@@ -18,6 +18,8 @@ class Huisarts extends User {
                 || choice == Administration.DeleteAllergies
                 || choice == Administration.AddConsult
                 || choice == Administration.EditConsult
-                || choice == Administration.DeleteConsult;
+                || choice == Administration.DeleteConsult
+                || choice == Administration.EditPatientLungcap
+                || choice == Administration.LOGOUT;
     }
 }

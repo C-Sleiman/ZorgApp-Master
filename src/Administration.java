@@ -18,6 +18,11 @@ class Administration {
     static final int AddConsult = 11;
     static final int EditConsult = 12;
     static final int DeleteConsult = 13;
+    static final int EditPatientLungcap = 14;
+    static final int LOGOUT = 15;
+
+
+
 
     Patient currentPatient;
     User currentUser;
@@ -35,12 +40,12 @@ class Administration {
 
 
     Administration(User user) {
-        patienten.add(new Patient(1, "Van Puffelen", "Pierre", LocalDate.of(2000, 2, 29), 80, 1.80));
-        patienten.add(new Patient(2, "Presley", "Elvis", LocalDate.of(2001, 3, 28), 60, 1.70));
-        patienten.add(new Patient(3, "Smith", "Jan", LocalDate.of(2004, 6, 15), 75, 1.90));
-        patienten.add(new Patient(4, "Gemayel", "Bashir", LocalDate.of(2007, 4, 10), 77, 1.90));
-        patienten.add(new Patient(5, "GeaGea", "Samir", LocalDate.of(2006, 7, 23), 87, 1.99));
-        patienten.add(new Patient(6, "Smith", "John", LocalDate.of(2008, 4, 11), 67, 1.64));
+        patienten.add(new Patient(1, "Van Puffelen", "Pierre", LocalDate.of(2000, 2, 29), 80, 1.80, 5));
+        patienten.add(new Patient(2, "Presley", "Elvis", LocalDate.of(2001, 3, 28), 60, 1.70, 4));
+        patienten.add(new Patient(3, "Smith", "Jan", LocalDate.of(2004, 6, 15), 75, 1.90, 7));
+        patienten.add(new Patient(4, "Gemayel", "Bashir", LocalDate.of(2007, 4, 10), 77, 1.90, 5));
+        patienten.add(new Patient(5, "GeaGea", "Samir", LocalDate.of(2006, 7, 23), 87, 1.99, 5));
+        patienten.add(new Patient(6, "Smith", "John", LocalDate.of(2008, 4, 11), 67, 1.64, 6));
 
 
 
@@ -53,11 +58,10 @@ class Administration {
 
 
 
-    void menu() {
+    boolean menu() {
         var scanner = new Scanner(System.in);
 
-        boolean nextCycle = true;
-        while (nextCycle) {
+        while (true) {
             System.out.format("%s\n", "=".repeat(80));
             System.out.format("Current patient: %s\n", currentPatient.fullName());
 
@@ -75,6 +79,9 @@ class Administration {
 
             if (currentUser.hasAccess(EditPatient))
                 System.out.format("%d:  Edit patient\n", EditPatient);
+
+            if (currentUser.hasAccess(EditPatientLungcap))
+                System.out.format("%d:  Edit longcapaciteit\n", EditPatientLungcap);
 
             if (currentUser.hasAccess(AddMeds))
                 System.out.format("%d:  Medicatie toevoegen\n", AddMeds);
@@ -103,6 +110,11 @@ class Administration {
             if (currentUser.hasAccess(DeleteConsult))
                 System.out.format("%d:  delete Consult\n", DeleteConsult);
 
+            if (currentUser.hasAccess(LOGOUT))
+                System.out.format("%d:  Logout\n", LOGOUT);
+
+
+
             System.out.print("enter #choice: ");
             int choice = scanner.nextInt();
 
@@ -113,8 +125,7 @@ class Administration {
 
             switch (choice) {
                 case STOP:
-                    nextCycle = false;
-                    break;
+                    return false;
 
                 case VIEW:
                     currentPatient.viewData();
@@ -157,7 +168,8 @@ class Administration {
                             System.out.println("gewicht: " + currentPatient.weight + " kg");
                             System.out.println("lengte: " + currentPatient.height + " M");
                             System.out.println("BMI: " + String.format("%.1f", currentPatient.bmi));
-                            
+
+
 
 
 
@@ -220,15 +232,45 @@ class Administration {
                         currentPatient.height = Double.parseDouble(newHeight);
                     }
 
+                    System.out.print("Nieuwe longcapaciteit: ");
+                    String newLungcap = scanner.nextLine();
+
+                    if (!newLungcap.isEmpty()) {
+                        currentPatient.lungcap = Double.parseDouble(newLungcap);
+                    }
+
                     currentPatient.bmi = currentPatient.weight / (currentPatient.height * currentPatient.height);
 
+
                     System.out.println("Patient aangepast.");
+
                     break;
 
+                case EditPatientLungcap:
+                    System.out.println("Longcapaciteit bewerken voor: " + currentPatient.firstName + " " + currentPatient.surname);
+                    scanner.nextLine();
+
+                    System.out.print("Huidige longcapaciteit: " + currentPatient.lungcap + " L\n");
+                    System.out.print("Nieuwe longcapaciteit: ");
+                    String newLungcapValue = scanner.nextLine();
+
+                    if (!newLungcapValue.isEmpty()) {
+                        currentPatient.lungcap = Double.parseDouble(newLungcapValue);
+                        System.out.println("Longcapaciteit aangepast naar: " + String.format("%.1f", currentPatient.lungcap) + " L");
+                    } else {
+                        System.out.println("Longcapaciteit niet gewijzigd.");
+                    }
+                    break;
 
 
                     case AddMeds:
                     scanner.nextLine();
+
+                    System.out.println("Medicatie Opslag:");
+                    System.out.println("- Paracetamol   - 50000 mg");
+                    System.out.println("- Ibuprofen     - 20000 mg");
+                    System.out.println("- Antibiotica   - 60000 mg");
+                    System.out.println("- Antidepresiva - 30000 mg");
 
                     System.out.println("Medication name: ");
                     String name = scanner.nextLine();
@@ -343,6 +385,11 @@ class Administration {
                         }
                     }
                     break;
+
+                case LOGOUT:
+                    Logout logout = new Logout();
+                    logout.performLogout();
+                    return true;
 
             }
         }
