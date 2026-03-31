@@ -8,6 +8,10 @@ class Tandarts extends User {
         return choice == Administration.STOP
                 || choice == Administration.VIEW
                 || choice == Administration.PatientList
-                || choice == Administration.SelectPatient;
+                || choice == Administration.SelectPatient
+                || choice == Administration.EditPatient
+                || choice == Administration.AddConsult
+                || choice == Administration.EditConsult
+                || choice == Administration.DeleteConsult;
     }
 }

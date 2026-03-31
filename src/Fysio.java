@@ -7,6 +7,9 @@ class Fysio extends User {
     boolean hasAccess(int choice) {
         return choice == Administration.VIEW
                 || choice == Administration.PatientList
-                || choice == Administration.SelectPatient;
+                || choice == Administration.SelectPatient
+                || choice == Administration.AddConsult
+                || choice == Administration.EditConsult
+                || choice == Administration.DeleteConsult;
     }
 }

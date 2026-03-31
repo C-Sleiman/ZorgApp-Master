@@ -5,15 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Patient {
-    static final int RETURN = 0;
-    static final int SURNAME = 1;
-    static final int FIRSTNAME = 2;
-    static final int DATEOFBIRTH = 3;
-    static final int AGE = 4;
-    static final int WEIGHT = 5;
-    static final int HEIGHT = 6;
-    static final int BMI = 7;
-    static final int MEDICATIE = 8;
 
     int id;
     String surname;
@@ -23,6 +14,8 @@ class Patient {
     double weight;
     double height;
     double bmi;
+    List<Allergies> allergies = new ArrayList<>();
+    List<Consult> consults = new ArrayList<>();
 
     public final List<MedicatieOpslag> medicatie = new ArrayList<>();
 
@@ -77,7 +70,8 @@ class Patient {
         System.out.format("%-17s %s\n", "Age:", age);
         System.out.format("%-17s %s\n", "Weight:", weight + " kg");
         System.out.format("%-17s %s\n", "Height:", height + " m");
-        System.out.format("%-17s %s\n", "BMI:", bmi);
+        System.out.format("%-17s %.1f\n", "BMI:", bmi);
+
 
         if (medicatie.isEmpty()) {
             System.out.format("%-17s %s\n", "Medication:", "Geen medicatie");
@@ -85,6 +79,24 @@ class Patient {
             System.out.println("Medication:");
             for (MedicatieOpslag m : medicatie) {
                 System.out.println("- " + m);
+            }
+        }
+
+        if (allergies.isEmpty()) {
+            System.out.format("%-17s %s\n", "Allergies:", "Geen allergieën");
+        } else {
+            System.out.println("Allergies:");
+            for (Allergies a : allergies) {
+                System.out.println("- " + a);
+            }
+        }
+
+        if (consults.isEmpty()) {
+            System.out.format("%-17s %s\n", "Consultation:", "Geen consultaties");
+        } else {
+            System.out.println("Consultation:");
+            for (Consult c : consults) {
+                System.out.println("- " + c);
             }
         }
     }
@@ -112,6 +124,55 @@ class Patient {
                 return;
             }
         }
+    }
+
+    public void AddAllergies(String allergies) {
+        this.allergies.add(new Allergies(allergies));
+    }
+    
+    public void updateAllergies(String oldAllergyName, String newAllergyName) {
+        for (int i = 0; i < this.allergies.size(); i++) {
+            if (this.allergies.get(i).getAllergies().equalsIgnoreCase(oldAllergyName)) {
+                this.allergies.set(i, new Allergies(newAllergyName));
+                System.out.println("Allergies updated from " + oldAllergyName + " to " + newAllergyName);
+                return;
+            }
+        }
+        System.out.println("Allergy not found");
+    }
+
+    public void deleteAllergies(String allergies) {
+        for (int i = 0; i < this.allergies.size(); i++) {
+            if (this.allergies.get(i).getAllergies().equalsIgnoreCase(allergies)) {
+                this.allergies.remove(i);
+                System.out.println("Allergy deleted from " + allergies);
+                return;
+            }
+        }
+    }
+
+    public void AddConsult(String consult) {
+        this.consults.add(new Consult(consult));
+    }
+
+    public void Editconsult(String consultation) {
+        if (!this.consults.isEmpty()) {
+            this.consults.set(0, new Consult(consultation));
+            System.out.println("Consultation updated");
+        } else {
+            System.out.println("No consultation to update");
+        }
+    }
+
+    public void deleteConsult(String consultation) {
+        for (int i = 0; i < this.consults.size(); i++) {
+            if (this.consults.get(i).getConsult().equalsIgnoreCase(consultation)) {
+                this.consults.remove(i);
+                System.out.println("Consultation deleted");
+                return;
+            }
+        }
+        System.out.println("Consultation not found");
     }
 
     String fullName() {
