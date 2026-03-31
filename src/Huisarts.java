@@ -12,6 +12,12 @@ class Huisarts extends User {
                 || choice == Administration.EditPatient
                 || choice == Administration.AddMeds
                 || choice == Administration.EditMeds
-                || choice == Administration.DeleteMeds;
+                || choice == Administration.DeleteMeds
+                || choice == Administration.AddAllergies
+                || choice == Administration.EditAllergies
+                || choice == Administration.DeleteAllergies
+                || choice == Administration.AddConsult
+                || choice == Administration.EditConsult
+                || choice == Administration.DeleteConsult;
     }
 }

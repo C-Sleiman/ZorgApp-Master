@@ -9,8 +9,7 @@ class Apotheker extends User {
                 || choice == Administration.VIEW
                 || choice == Administration.PatientList
                 || choice == Administration.SelectPatient
-                || choice == Administration.AddMeds
-                || choice == Administration.EditMeds
-                || choice == Administration.DeleteMeds;
+                || choice == Administration.AddMeds;
+
     }
 }

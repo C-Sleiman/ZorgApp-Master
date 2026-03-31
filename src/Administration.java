@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -13,8 +12,12 @@ class Administration {
     static final int AddMeds = 5;
     static final int EditMeds = 6;
     static final int DeleteMeds = 7;
-
-
+    static final int AddAllergies = 8;
+    static final int EditAllergies = 9;
+    static final int DeleteAllergies = 10;
+    static final int AddConsult = 11;
+    static final int EditConsult = 12;
+    static final int DeleteConsult = 13;
 
     Patient currentPatient;
     User currentUser;
@@ -82,6 +85,24 @@ class Administration {
             if (currentUser.hasAccess(DeleteMeds))
                 System.out.format("%d:  Medicatie Delete\n", DeleteMeds);
 
+            if(currentUser.hasAccess(AddAllergies))
+                System.out.format("%d:  add Allergies\n", AddAllergies);
+
+            if(currentUser.hasAccess(EditAllergies))
+                System.out.format("%d:  Edit Allergies\n", EditAllergies);
+
+            if (currentUser.hasAccess(DeleteAllergies))
+                System.out.format("%d:  Delete Allergies\n", DeleteAllergies);
+
+            if (currentUser.hasAccess(AddConsult))
+                System.out.format("%d:  Add consult\n", AddConsult);
+
+            if (currentUser.hasAccess(EditConsult))
+                System.out.format("%d:  Edit Consult\n", EditConsult);
+
+            if (currentUser.hasAccess(DeleteConsult))
+                System.out.format("%d:  delete Consult\n", DeleteConsult);
+
             System.out.print("enter #choice: ");
             int choice = scanner.nextInt();
 
@@ -135,8 +156,10 @@ class Administration {
                             System.out.println("leeftijd: " + currentPatient.age);
                             System.out.println("gewicht: " + currentPatient.weight + " kg");
                             System.out.println("lengte: " + currentPatient.height + " M");
-                            System.out.println("BMI: " + currentPatient.bmi);
-                            System.out.println("Medicatie: " + currentPatient.medicatie);
+                            System.out.println("BMI: " + String.format("%.1f", currentPatient.bmi));
+                            
+
+
 
                             if (currentPatient.medicatie.isEmpty()) {
                                 System.out.println("Medication: Geen medicatie");
@@ -144,6 +167,22 @@ class Administration {
                                 System.out.println("Medication:");
                                 for (MedicatieOpslag m : currentPatient.medicatie) {
                                     System.out.println("- " + m);
+                                }
+                            }
+                            if (currentPatient.allergies.isEmpty()) {
+                                System.out.println("Allergies: Geen allergieën");
+                            } else {
+                                System.out.println("Allergies:");
+                                for (Allergies a : currentPatient.allergies) {
+                                    System.out.println("- " + a);
+                                }
+                            }
+                            if (currentPatient.consults.isEmpty()) {
+                                System.out.println("Consultation: Geen consultaties");
+                            } else {
+                                System.out.println("Consultation:");
+                                for (Consult c : currentPatient.consults) {
+                                    System.out.println("- " + c);
                                 }
                             }
                         }
@@ -183,7 +222,7 @@ class Administration {
 
                     currentPatient.bmi = currentPatient.weight / (currentPatient.height * currentPatient.height);
 
-                    System.out.println("Patiënt aangepast.");
+                    System.out.println("Patient aangepast.");
                     break;
 
 
@@ -224,6 +263,87 @@ class Administration {
 
                     currentPatient.deleteMedication(medToDelete);
                     break;
+
+
+                case AddAllergies:
+                    scanner.nextLine();
+
+                    System.out.println("Allergie name: ");
+                    String allergies = scanner.nextLine();
+
+                    currentPatient.AddAllergies(allergies);
+
+                    System.out.println("Allergie Added ");
+                    break;
+
+                case EditAllergies:
+                    scanner.nextLine();
+
+                    System.out.println("Allergie name to update: ");
+                    String allergyToUpdate = scanner.nextLine();
+
+                    System.out.println("New Allergie name: ");
+                    String newAllergyName = scanner.nextLine();
+
+                    currentPatient.updateAllergies(allergyToUpdate, newAllergyName);
+                    break;
+
+                case DeleteAllergies:
+                    scanner.nextLine();
+
+                    System.out.println("Allergie name to delete: ");
+                    String allergyToDelete = scanner.nextLine();
+
+                    currentPatient.deleteAllergies(allergyToDelete);
+                    break;
+
+
+                case AddConsult:
+                    scanner.nextLine();
+
+                    System.out.println("Consultation: ");
+                    String consultation = scanner.nextLine();
+
+                    currentPatient.AddConsult(consultation);
+
+                    System.out.println("Consultation Added ");
+                    break;
+
+                case EditConsult:
+                    scanner.nextLine();
+
+                    System.out.println("Consultation: ");
+                    String newConsultation = scanner.nextLine();
+
+                    currentPatient.Editconsult(newConsultation);
+                    break;
+
+                case DeleteConsult:
+                    if (currentPatient.consults.isEmpty()) {
+                        System.out.println("Geen consultaties om te verwijderen.");
+                    } else {
+                        System.out.println("Huidige consultatie(s):");
+                        for (int i = 0; i < currentPatient.consults.size(); i++) {
+                            System.out.println((i + 1) + ": " + currentPatient.consults.get(i));
+                        }
+
+                        scanner.nextLine();
+                        System.out.print("Wil je deze consult(s) verwijderen? (1: Ja, 2: Nee): ");
+                        int deleteChoice = scanner.nextInt();
+
+                        if (deleteChoice == 1) {
+                            if (!currentPatient.consults.isEmpty()) {
+                                currentPatient.consults.clear();
+                                System.out.println("Alle consultaties verwijderd.");
+                            }
+                        } else if (deleteChoice == 2) {
+                            System.out.println("Verwijdering geannuleerd.");
+                        } else {
+                            System.out.println("Ongeldige keuze.");
+                        }
+                    }
+                    break;
+
             }
         }
     }
