@@ -59,8 +59,11 @@ class ZorgApp {
                 System.out.println("Succesvol ingelogd!\n");
 
                 Administration administration = new Administration(ingelogdeUser);
-                administration.menu();
-                break;
+                if (administration.menu()) {
+                    continue; // logout, terug naar login
+                } else {
+                    break; // stop, exit
+                }
             } else {
                 System.out.println("Gebruikersnaam of wachtwoord is fout.\n");
             }

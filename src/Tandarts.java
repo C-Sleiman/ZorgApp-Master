@@ -12,6 +12,7 @@ class Tandarts extends User {
                 || choice == Administration.EditPatient
                 || choice == Administration.AddConsult
                 || choice == Administration.EditConsult
-                || choice == Administration.DeleteConsult;
+                || choice == Administration.DeleteConsult
+                || choice == Administration.LOGOUT;
     }
 }
